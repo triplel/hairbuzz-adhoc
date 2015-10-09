@@ -26,7 +26,7 @@ def main():
 
     docs_list = []
     for line in lines:
-        tokens = line.strip("\n").split("|")
+        tokens = line.lower().strip("\n").split("|")
         venue_doc = {
             "hbid": tokens[0],
             "name": tokens[1],

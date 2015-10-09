@@ -28,7 +28,7 @@ def main():
 
     venue_map = {}
     for line in venues_file:
-        tokens = line.strip("\r").strip("\n").split("|")
+        tokens = line.lower().strip("\r").strip("\n").split("|")
         venue_doc = {
             "venue_hbid": tokens[0],
             "name": tokens[1],
@@ -52,7 +52,7 @@ def main():
         venue_map[venue_doc["venue_hbid"]] = data
 
     for line in stylists_file:
-        tokens = line.strip("\r").strip("\n").split("|")
+        tokens = line.lower().strip("\r").strip("\n").split("|")
         stylist_doc = {
             "hbid": tokens[0],
             "first_name": tokens[1],
