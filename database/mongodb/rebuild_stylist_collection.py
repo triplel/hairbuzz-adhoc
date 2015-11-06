@@ -11,7 +11,6 @@ STYLIST_PSV_SCHEMA = ['hbid', 'first_name', 'last_name', 'gender', 'rating', 'pr
 VENUE_PSV_SCHEMA = ['hbid', 'name', 'street_address', 'supplemental_address', 'city', 'neighbourhood', 'state', 'zip',
                     'country', 'phone', 'latitude', 'longitude', 'image']
 
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--stylist', required=True)
@@ -53,7 +52,7 @@ def main():
             "hbid": tokens[0],
             "first_name": tokens[1],
             "last_name": tokens[2],
-            "slug": "",
+            "slug": "{short_first}{full_last}".format(short_first=tokens[1][0], full_last=tokens[2]),
             "avatar": tokens[7],
             "gender": tokens[3],
             "rating": int(tokens[4]),
