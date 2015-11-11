@@ -5,6 +5,7 @@ import json
 import pymongo
 from pymongo import MongoClient
 import ast
+# import create_collections
 
 VENUE_PSV_SCHEMA = ['hbid', 'name', 'street_address', 'supplemental_address', 'city', 'neighbourhood', 'state', 'zip',
                     'country', 'phone', 'latitude', 'longitude', 'image']
@@ -46,7 +47,10 @@ def main():
 
     venues_collection = hb_dev.venues
     # clean up the collection before reinserting
-    venues_collection.drop()
+    venues_collection.remove()
+
+    venues_collection.ensure_index([("name", 1), ("phone", 1)], unique=True)
+
     venues_collection.insert(venue_list)
     print "{count} venues inserted in venues collection".format(count=venues_collection.count())
 

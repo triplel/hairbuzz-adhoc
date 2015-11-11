@@ -69,7 +69,10 @@ def main():
 
     stylists_collection = hb_dev.stylists
     # clean up the collection before reinserting
-    stylists_collection.drop()
+
+    # stylists_collection.drop()
+    stylists_collection.remove()
+    stylists_collection.ensure_index([("slug", 1)], unique=True)
     stylists_collection.insert(stylist_josn_list)
     print "{count} stylists inserted in stylists collection".format(count=stylists_collection.count())
 
