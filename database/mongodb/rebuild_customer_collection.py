@@ -61,10 +61,9 @@ def main():
     #                                   ("social_networks.instagram_username", 1), ("social_networks.tumblr_username", 1),
     #                                   ("social_networks.google_username", 1)], unique=True)
 
-
-    customer_collection.ensure_index([("hbid", 1), ("slug", 1), ("email", 1)], unique=True)
-
-
+    customer_collection.ensure_index([("hbid", 1)], unique=True)
+    customer_collection.ensure_index([("slug", 1)], unique=True)
+    customer_collection.ensure_index([("email", 1)], unique=True)
 
     customer_collection.insert(customer_list)
 
