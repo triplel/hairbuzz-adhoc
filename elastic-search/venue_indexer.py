@@ -98,19 +98,20 @@ def main():
             response = conn.getresponse()
             print response
     else:
+        counter = 0
         for line in lines:
             venue_doc = build_from_oddity_data(line)
             data = json.dumps(venue_doc)
-            print data
+            # print data
             docs_list.append(venue_doc)
             headers = {"content-type": "application/json"}
             conn = httplib.HTTPConnection(ELASTIC_SEARCH_HOST_URL)
             conn.request("POST", ELASTIC_SEARCH_POST_URL, data, headers)
-            response = conn.getresponse()
-            print response
-
-
-
+            # response = conn.getresponse()
+            counter += 1
+            if counter % 5000 == 0:
+                print "indexing......({count} venues indexed)".format(count=counter)
+        print "Done......{count} venues indexed!".format(count=counter)
 
 
 if __name__ == '__main__':
