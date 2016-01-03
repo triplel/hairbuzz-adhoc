@@ -4,6 +4,7 @@ import argparse
 import json
 import httplib, urllib
 from random import randint
+import venue_helper
 
 PSV_SCHEMA = ['hbid', 'name', 'street_address', 'supplemental_address', "city", "neighbourhood", "state", "zip",
               "country", "phone", "lat", "long", "image"]
