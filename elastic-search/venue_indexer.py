@@ -30,7 +30,7 @@ ELASTIC_SEARCH_POST_URL = "/{index_name}/{type_name}".format(index_name=INDEX_NA
 
 def build_from_oddity_data(data):
     tokens = data.lower().strip("\n").replace('\"', '').split(",")
-    hbid = "V00000{id}".format(id=tokens[0])
+    hbid = "V{:010}".format(int(tokens[0]))
     phone = tokens[22].replace(' ', '').replace('(', '').replace(')', '').replace('-', '')
     venue_doc = {
         "hbid": hbid,
@@ -53,10 +53,12 @@ def build_from_oddity_data(data):
     }
     return venue_doc
 
+
 def build_from_test_psv(data):
     tokens = data.lower().strip("\n").split("|")
+    hbid = "V{:010}".format(int(tokens[0]))
     venue_doc = {
-        "hbid": tokens[0],
+        "hbid": hbid,
         "name": tokens[1],
         "address": {
             "street_address": tokens[2],

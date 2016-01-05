@@ -5,7 +5,7 @@ import json
 import httplib, urllib
 from random import randint
 import ast
-# import names
+import names
 
 STYLIST_PSV_SCHEMA = ['hbid', 'first_name', 'last_name', 'gender', 'rating', 'price_rank', 'reviews', 'avatar', 'venue_hbid']
 
@@ -39,7 +39,8 @@ GENDER_OPTION_ARRAY = ['f', 'm']
 
 def build_from_oddity_data(data):
     tokens = data.lower().strip("\n").replace('\",\"', '|').replace('\"', '').split("|")
-    hbid = "V00000{id}".format(id=tokens[0])
+    # hbid = "V00000{id}".format(id=tokens[0])
+    hbid = "V{:010}".format(int(tokens[0]))
     phone = tokens[22].replace(' ', '').replace('(', '').replace(')', '').replace('-', '')
     venue_doc = {
         "hbid": hbid,
@@ -75,11 +76,11 @@ def main():
     for line in venues_file:
         venue_obj = build_from_oddity_data(line)
         stylist_count += 1
-        # stylist_name_array = names.get_full_name().split(' ')
-        # first_name = stylist_name_array[0]
-        first_name = "john"
-        # last_name = stylist_name_array[1]
-        last_name = "doe"
+        stylist_name_array = names.get_full_name().split(' ')
+        first_name = stylist_name_array[0]
+        # first_name = "john"
+        last_name = stylist_name_array[1]
+        # last_name = "doe"
         slug = "{first}{last}{counter}".format(first=first_name[0], last=last_name, counter=stylist_count)
         avatar_url = STYLIST_AVATAR_TEMPLATE.format(avatar_id='{:04}'.format(stylist_count % CURRENT_MAX_ID))
         gender = GENDER_OPTION_ARRAY[randint(0, 1)]
@@ -99,6 +100,7 @@ def main():
             "work_place": venue_obj
         }
         data = json.dumps(stylist_doc)
+        print data
         headers = {"content-type": "application/json"}
         conn = httplib.HTTPConnection(ELASTIC_SEARCH_HOST_URL)
         conn.request("POST", ELASTIC_SEARCH_POST_URL, data, headers)
