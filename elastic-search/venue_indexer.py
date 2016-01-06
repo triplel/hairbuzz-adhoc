@@ -29,7 +29,7 @@ ELASTIC_SEARCH_POST_URL = "/{index_name}/{type_name}".format(index_name=INDEX_NA
 
 
 def build_from_oddity_data(data):
-    tokens = data.lower().strip("\n").replace('\"', '').split(",")
+    tokens = data.lower().strip("\n").replace('\",\"', '|').replace('\"', '').split("|")
     hbid = "V{:010}".format(int(tokens[0]))
     phone = tokens[22].replace(' ', '').replace('(', '').replace(')', '').replace('-', '')
     venue_doc = {
