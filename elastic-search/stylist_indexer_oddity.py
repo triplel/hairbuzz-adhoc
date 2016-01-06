@@ -100,12 +100,10 @@ def main():
             "work_place": venue_obj
         }
         data = json.dumps(stylist_doc)
-        print data
         headers = {"content-type": "application/json"}
         conn = httplib.HTTPConnection(ELASTIC_SEARCH_HOST_URL)
         conn.request("POST", ELASTIC_SEARCH_POST_URL, data, headers)
         response = conn.getresponse()
-        # print response
         if stylist_count % 5000 == 0:
             print "indexing......({count} stylists indexed)".format(count=stylist_count)
     print "Done......{count} stylists indexed!".format(count=stylist_count)
