@@ -16,9 +16,9 @@ VENUE_PSV_SCHEMA = ['hbid', 'name', 'street_address', 'supplemental_address', 'c
 ODDITY_VENUE_SCHEMA = [(0, 'id'), (1, 'biz_name'), (2, 'biz_info'), (3, 'cat_primary'), (4, 'cat_sub'), (5, 'e_address'),
                        (6, 'e_city'), (7, 'e_state') , (8, 'e_postal'), (9, 'e_zip_full'), (10, 'e_country'), (11, 'loc_county'),
                        (12, 'loc_area_code'), (13, 'loc_FIPS'), (14, 'loc_MSA'), (15, 'loc_PMSA'), (16, 'loc_TZ'), (17, 'loc_DST'),
-                        (18, 'loc_LAT_centroid'), (19, 'loc_LAT_poly'), (20, 'loc_LONG_centroid'), (21, 'loc_LONG_poly'), (22, 'biz_phone'),
-                        (23, 'biz_phone_ext'), (24, 'biz_fax'), (25, 'biz_email'), (26, 'web_url'), (27, 'web_meta_title'), (28, 'web_meta_desc'),
-                        (29, 'web_meta_keys')]
+                       (18, 'loc_LAT_centroid'), (19, 'loc_LAT_poly'), (20, 'loc_LONG_centroid'), (21, 'loc_LONG_poly'), (22, 'biz_phone'),
+                       (23, 'biz_phone_ext'), (24, 'biz_fax'), (25, 'biz_email'), (26, 'web_url'), (27, 'web_meta_title'), (28, 'web_meta_desc'),
+                       (29, 'web_meta_keys')]
 
 
 ELASTIC_SEARCH_HOST = "localhost"
@@ -27,6 +27,9 @@ INDEX_NAME = "test"
 TYPE_NAME = "stylist"
 
 ELASTIC_SEARCH_HOST_URL = "{host}:{port}".format(host=ELASTIC_SEARCH_HOST,port=ELASTIC_SEARCH_PORT)
+
+ELASTIC_SEARCH_MAPPING_URL = "/{index_name}".format(index_name=INDEX_NAME)
+
 ELASTIC_SEARCH_POST_URL = "/{index_name}/{type_name}".format(index_name=INDEX_NAME,type_name=TYPE_NAME)
 
 DEFAULT_VENUE_PICTURE = "https://s3.amazonaws.com/hairbuzz.signup.profile.pics/Studio/salon_inner.jpg"
@@ -54,10 +57,11 @@ def build_from_oddity_data(data):
             "zip": tokens[8],
             "country": tokens[10]
         },
-        "coordinates": {
-            "latitude": tokens[18],
-            "longitude": tokens[20]
-        },
+        "coordinates": "{lat}, {lon}".format(lat=tokens[18],lon=tokens[20]),
+        # "coordinates": {
+        #     "lat": float(tokens[18]),
+        #     "lon": float(tokens[20])
+        # },
         "phone": phone,
         "image": DEFAULT_VENUE_PICTURE
     }
@@ -70,6 +74,7 @@ def main():
     args = parser.parse_args()
     venues_file = open(args.data)
     # stylists = stylists_file.readlines()
+    # create mapping of stylist
 
     stylist_count = 13
 

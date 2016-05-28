@@ -17,6 +17,7 @@ match_all = {
     }
 }
 
+
 def run_delete_post(type,data):
     delete_url = "/{index_name}/{type_name}/_query".format(index_name=INDEX_NAME,type_name=type)
     headers = {"content-type": "application/json"}
@@ -26,15 +27,26 @@ def run_delete_post(type,data):
     print response.status
 
 
+def delete_index():
+    delete_url = "/{index_name}".format(index_name=INDEX_NAME)
+    headers = {"content-type": "application/json"}
+    conn = httplib.HTTPConnection(ELASTIC_SEARCH_HOST_URL)
+    conn.request("DELETE", delete_url, headers)
+    response = conn.getresponse()
+    print response.status
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--type', required=True, choices=["venue", "stylist", "all"])
+    parser.add_argument('--type', required=True, choices=["venue", "stylist", "data", "all"])
     args = parser.parse_args()
     type = args.type
     data = json.dumps(match_all)
-    if type == "all":
+    if type == "data":
         run_delete_post("venue", data)
         run_delete_post("stylist", data)
+    elif type == "all":
+        delete_index
     else:
         run_delete_post(type, data)
 
