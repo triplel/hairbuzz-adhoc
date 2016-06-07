@@ -106,8 +106,9 @@ def main():
         }
         data = json.dumps(stylist_doc)
         headers = {"content-type": "application/json"}
+        ELASTIC_SEARCH_STYLIST_PUT_URL = "/{index_name}/{type}/{id}".format(index_name=INDEX_NAME,type=TYPE_NAME,id=stylist_count)
         conn = httplib.HTTPConnection(ELASTIC_SEARCH_HOST_URL)
-        conn.request("POST", ELASTIC_SEARCH_POST_URL, data, headers)
+        conn.request("PUT", ELASTIC_SEARCH_STYLIST_PUT_URL, data, headers)
         response = conn.getresponse()
         if stylist_count % 5000 == 0:
             print "indexing......({count} stylists indexed)".format(count=stylist_count)
